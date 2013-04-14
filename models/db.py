@@ -44,6 +44,33 @@ auth = Auth(db)
 crud, service, plugins = Crud(db), Service(), PluginManager()
 
 ## create all tables needed by auth if not custom tables
+db.define_table(
+	auth.settings.table_user_name,
+	Field('first_name', length=128, default=''),
+	Field('last_name', length=128, default=''),
+	Field('email', length=128, default='' ),
+	Field('username', length=128),
+	Field('password', 'password', length=512,
+		readable=False, label='Password'),
+	Field('registration_key', length=512,
+		writable=False, readable=False, default=''),
+	Field('reset_password_key', length=512,
+		writable=False, readable=False, default=''),
+	Field('registration_id', length=512,
+		writable=False, readable=False, default=''),
+	Field('llave','text'))
+custom_auth_table = db[auth.settings.table_user_name] # get the custom_auth_table
+custom_auth_table.first_name.requires = \
+	IS_NOT_EMPTY(error_message=auth.messages.is_empty)
+custom_auth_table.last_name.requires = \
+	IS_NOT_EMPTY(error_message=auth.messages.is_empty)
+custom_auth_table.password.requires = [CRYPT()]
+custom_auth_table.email.requires = [
+	IS_EMAIL(error_message=auth.messages.invalid_email),
+	IS_NOT_IN_DB(db, custom_auth_table.email)]
+custom_auth_table.username.requires = IS_NOT_IN_DB(db,custom_auth_table.username)
+auth.settings.table_user = custom_auth_table # tell auth to use custom_auth_table
+
 auth.define_tables(username=False, signature=False)
 
 ## configure email
