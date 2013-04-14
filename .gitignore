@@ -1,0 +1,8 @@
+cache
+databases
+errors
+sessions
+*.py?
+*.sw?
+*~
+
