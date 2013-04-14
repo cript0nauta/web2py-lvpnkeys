@@ -22,7 +22,7 @@ def mkhosts():
 		f = open(HOSTS_DIR + user.username, 'w')
 		f.write(user.llave+'\n')
 		f.close()
-	os.system('tar -czf %shosts.tar.gz %s' % (STATIC_DIR, HOSTS_DIR))
+	os.system('tar -C %s -czf %shosts.tar.gz hosts/' % (APP_DIR, STATIC_DIR, HOSTS_DIR))
 	_next = request.vars._next or URL('index')
 	redirect(_next)
 
