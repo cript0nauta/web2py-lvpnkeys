@@ -217,6 +217,7 @@
 'next 100 rows': '100 filas siguientes',
 'NO': 'NO',
 'No databases in this application': 'No hay bases de datos en esta aplicación',
+'Nodos LibreVPN': 'Nodos LibreVPN',
 'Object or table name': 'Object or table name',
 'Online examples': 'Ejemplos en línea',
 'or import from csv file': 'o importar desde archivo CSV',
