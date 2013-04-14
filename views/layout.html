@@ -77,7 +77,14 @@
           <span class="icon-bar"></span>
         </button>
 	{{=response.logo or ''}}
-        <ul id="navbar" class="nav pull-right">{{=LI(A( T('Login'), _href=URL(f='user',args=['login']) ))}}</ul>
+		<ul id="navbar" class="nav pull-right">
+			{{if auth.user:}}
+				{{=LI(A(T('Contraseña'), _href=URL('user',args='change_password')))}}
+				{{=LI(A(T('Logout'), _href=URL('user',args='logout')))}}
+			{{else:}}
+				{{=LI(A(T('Login'), _href=URL('user', args='login')))}}
+			{{pass}}
+		</ul>
         <div class="nav-collapse">
           {{is_mobile=request.user_agent().is_mobile}}
           {{if response.menu:}}
