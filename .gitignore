@@ -3,6 +3,7 @@ databases
 errors
 sessions
 hosts
+hosts.tar.gz
 *.py?
 *.sw?
 *~

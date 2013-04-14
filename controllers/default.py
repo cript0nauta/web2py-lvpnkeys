@@ -11,6 +11,7 @@
 
 import os
 APP_DIR = 'applications/%s/' % request.application
+STATIC_DIR = APP_DIR + 'static/'
 HOSTS_DIR = APP_DIR + 'hosts/'
 
 def mkhosts():
@@ -19,14 +20,26 @@ def mkhosts():
 	users = db(db.auth_user.id>0).select()
 	for user in users:
 		f = open(HOSTS_DIR + user.username, 'w')
-		f.write(user.llave)
+		f.write(user.llave+'\n')
 		f.close()
-
+	os.system('tar -czf %shosts.tar.gz %s' % (STATIC_DIR, HOSTS_DIR))
+	_next = request.vars._next or URL('index')
+	redirect(_next)
 
 def index():
-	mkhosts()
-	return dict(message=T('Hello World'))
+	nodos = db(db.auth_user.id>0).select()
+	return dict(nodos=nodos)
 
+def key():
+	response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+	username = request.args(0)
+	if not username:
+		return T('Indique el usuario')
+	user = db(db.auth_user.username==username).select()
+	if not user:
+		raise HTTP(404)
+	user = user[0]
+	return user.llave
 
 def user():
     """
@@ -42,7 +55,8 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
-    return dict(form=auth())
+    form = auth()
+    return dict(form=form)
 
 
 def download():
