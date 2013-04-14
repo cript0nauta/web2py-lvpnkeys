@@ -68,6 +68,7 @@ custom_auth_table.password.requires = [CRYPT()]
 custom_auth_table.email.requires = [
 	IS_EMAIL(error_message=auth.messages.invalid_email),
 	IS_NOT_IN_DB(db, custom_auth_table.email)]
+custom_auth_table.llave.requires = IS_NOT_EMPTY(),
 custom_auth_table.username.requires = IS_NOT_IN_DB(db,custom_auth_table.username)
 auth.settings.table_user = custom_auth_table # tell auth to use custom_auth_table
 
