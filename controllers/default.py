@@ -9,17 +9,23 @@
 ## - call exposes all registered services (none by default)
 #########################################################################
 
+import os
+APP_DIR = 'applications/%s/' % request.application
+HOSTS_DIR = APP_DIR + 'hosts/'
+
+def mkhosts():
+	""" Crea un fichero con la llave por cada usuario y lo empaqueta"""
+	os.system('mkdir -p %s' % HOSTS_DIR)
+	users = db(db.auth_user.id>0).select()
+	for user in users:
+		f = open(HOSTS_DIR + user.username, 'w')
+		f.write(user.llave)
+		f.close()
+
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simple replace the two lines below with:
-    return auth.wiki()
-    """
-    response.flash = T("Welcome to web2py!")
-    return dict(message=T('Hello World'))
+	mkhosts()
+	return dict(message=T('Hello World'))
 
 
 def user():

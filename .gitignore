@@ -2,6 +2,7 @@ cache
 databases
 errors
 sessions
+hosts
 *.py?
 *.sw?
 *~
